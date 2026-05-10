@@ -1,4 +1,5 @@
 import requests
+import os
 import pandas as pd
 from bs4 import BeautifulSoup
 
@@ -26,15 +27,21 @@ def spisok(vid='div',cls1='redesign_afisha_movie_main',cls2='redesign_afisha_mov
 data = spisok()
 dat = pd.DataFrame(data)
 print(dat)
+# Сохраняем в эксель
 df = pd.DataFrame(dat)
-df.to_excel("user_rates.xlsx")
-#Отправка данных в телеграмм бот
-def send_file_via_telegram(token='8090185319:AAHG2_o6RJca2QYSQNmIfwCosXxo3nJBYDk', chat_id=6193932535, file_path="C:/Users/barie/PyCharmMiscProject/user_rates.xlsx"):
+df.to_excel("New_anime.xlsx")
+# Отправка данных в телеграмм бот
+def send_file_via_telegram(token='8090185319:AAHG2_o6RJca2QYSQNmIfwCosXxo3nJBYDk', chat_id=6193932535, file_path="C:/Users/barie/PyCharmMiscProject/New_anime.xlsx"):
    url = f"https://api.telegram.org/bot{token}/sendDocument"
-   with open(file_path, 'rb') as file:
-      files = {'user_rates.xlsx': file}
+    with open(file_path, 'rb') as file:
+      files = {
+         'document': (
+            os.path.basename(file_path),  # имя файла, которое увидит получатель
+            file,  # файловый объект
+            'application/octet-stream'  # MIME‑тип (универсальный)
+                      )
+      }
       data = {'chat_id': chat_id}
-      response = requests.post(url, files=files, data=data)
-   return response.json()
-result = send_file_via_telegram()
+      response = requests.post(url, files=files, data=data, timeout=30)
+      return response.json()
 print(result)
