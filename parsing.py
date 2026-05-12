@@ -30,7 +30,7 @@ print(dat)
 df = pd.DataFrame(dat)
 df.to_excel("New_anime.xlsx")
 #Отправка данных в телеграмм бот
-def send_file_via_telegram(token='8090185319:AAHG2_o6RJca2QYSQNmIfwCosXxo3nJBYDk', chat_id=6193932535, file_path="C:/Users/barie/PyCharmMiscProject/New_anime.xlsx"):
+def send_file_via_telegram(token='', chat_id=, file_path="):
    url = f"https://api.telegram.org/bot{token}/sendDocument"
    with open(file_path, 'rb') as file:
       files = {
